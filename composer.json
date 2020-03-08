@@ -1,0 +1,14 @@
+{
+    "name": "mathec-x/compiler",
+    "type": "library",
+    "description": "php-js-css bundle and struct",
+    "keywords": ["bundle","php","js","css"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mathec",
+            "email": "mathecxs@gmail.com",
+            "role": "Developer"
+        }
+    ]
+}
