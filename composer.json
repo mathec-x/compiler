@@ -5,11 +5,23 @@
     "description": "php-js-css bundle and struct",
     "keywords": ["bundle","php","js","css"],
     "license": "MIT",
+    "require": {
+        "php": ">=7.0.0"
+    },
     "authors": [
         {
             "name": "mathec",
             "email": "mathecxs@gmail.com",
             "role": "Developer"
         }
-    ]
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Compiler\\PathConverter\\": "./PathConverter/src/",
+            "Compiler\\Minify\\": "./Minify/src/",
+            "Compiler\\App\\": "./app",
+            "Compiler\\Mobile\\": "./Mobile/"
+        }
+    }
 }
