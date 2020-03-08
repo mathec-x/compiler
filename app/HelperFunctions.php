@@ -1,6 +1,6 @@
 <?php
 //GLOBAL FUNCTIONS
-define('ROOTDIR', dirname(__DIR__, 3));
+define('ROOTDIR', dirname(__DIR__, 4));
 define('VIEWENGINE', '.php');
 
 function getContext(){
@@ -20,14 +20,14 @@ function headers() {
 }
 
 
-function restrict($key){
+function restrict($session, $key){
 	session_start();
 	session_write_close();
 	$header = headers();
 	$key = ucwords(strtolower($key));
 
     if (!array_key_exists($key, $header)) die(header('HTTP/1.0 400 REQUEST AUTHORIZATION ONLY WORKS IN APP'));
-    if ($_SESSION['WindowAppToken'] !== $header[$key]) die(header('HTTP/1.0 400 REQUEST AUTHORIZATION FAIL'));
+    if ($_SESSION[$session] !== $header[$key]) die(header('HTTP/1.0 400 REQUEST AUTHORIZATION FAIL'));
 }
 /**
  * generate a json response view
