@@ -122,12 +122,13 @@ function int(array $string)
 	$key = key($string);
 	return intval($string[$key]);
 }
-function first($v){
-	return reset($v);	
+function first($v , $key = 0){
+	return (array_key_exists($key, $v)) ? $v[$key] : false;	
 }
 function last($v){
 	return (is_array($v) || is_object($v))? end($v) : false;	
 }
+
 function DateTime(string $date, bool $throwException = false){
 	$date = str_replace('-', '', $date);
 	$date = str_replace('/', '-', $date);
