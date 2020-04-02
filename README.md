@@ -5,10 +5,10 @@ all routes will respect the order of the controller
 just add it on public/index.php
 
 
-use Compiler\App\Art;
+  use Compiler\App\Art;
 
-$Art = new Art;
-$Art->UseMvc();
+  $Art = new Art;
+  $Art->UseMvc();
 
 
 
@@ -19,8 +19,9 @@ namespace/class/function
 the struct folder
 
 
-workingproject
-  -controllers
+# workingproject
+
+  - controllers
     - namespace
       - classController.php
       - anotherclassController.php
