@@ -28,17 +28,23 @@ the struct folder
   - controllers
     - namespace
       - classController.php
-      - anotherclassController.php
+      - anotherClassController.php
       
   - views
     - namespace
       - classFunction.php
-      - anotherclassFunction.php
+      - anotherClassFunction.php
 
   - public
     - index.php
     
-    
+
+the route inside app will be
+/namespace/class/function
+
+cast a uppercase first leeter 
+/namespace/another-class/function
+
 #helpers functions
     
       - Json( @array ) : string
