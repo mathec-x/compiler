@@ -122,8 +122,18 @@ function int(array $string)
 	$key = key($string);
 	return intval($string[$key]);
 }
-function first($v , $key = 0){
+function first($v){
+	return reset($v);	
+}
+function firstOrFalse($v , $key = 0){
+	if(is_array($v))
 	return (array_key_exists($key, $v)) ? $v[$key] : false;	
+	
+	if(is_object($v))
+	return (property_exists($key, $v)) ? $v->{$key} : false;	
+		
+	return false;
+
 }
 function last($v){
 	return (is_array($v) || is_object($v))? end($v) : false;	
