@@ -37,9 +37,30 @@ the struct folder
 
   - public
     - index.php
+    
+    
+#helpers functions
+    
+      - Json( @array ) : string
+      - View()
+      - first() 
+      
+      
+#js bundle
+      
+      use Compiler\Minify;
 
+      $vendorfile = "public/core/vendor.js";
 
+      $rootdir = dirname(__DIR__);
+      require("$rootdir/vendor/autoload.php");
+
+     $libs = new Minify\JS();
+
+     $libs->add( $ngRoot . "/static/libs/underscore-min.js");
+     $libs->cdn("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js");
    
-
+     //create the file in public
+     $libs->build($vendorfile);
 
 
