@@ -33,7 +33,7 @@ class Art implements IArt
 		#preserve full post to use in functions
 		$_POST = Post();
 		#add the same POSTS on argments for function
-		if($_POST && COUNT($_POST) < 20)
+		if($_POST && \is_array($_POST) && COUNT($_POST) < 20)
 		foreach($_POST as $key => $value) array_push($_ARGS,[$key => $value]);		
 		# generate {namespace}\\{class} 
 		$namespace = implode('\\', array_slice($_PATH,0,2)) . 'Controller';
