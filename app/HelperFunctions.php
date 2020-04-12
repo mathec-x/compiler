@@ -7,6 +7,19 @@ function getContext(){
 	return stream_context_create(array('http' => array('header'=>'Connection: close\r\n')));
 }
 
+//usage echo Mask("##.###.###/####-##",$cnpj);
+function StringMask($mask,$str){
+
+    $str = str_replace(" ","",$str);
+
+    for($i=0;$i<strlen($str);$i++){
+        $mask[strpos($mask,"#")] = $str[$i];
+    }
+
+    return $mask;
+
+}
+
 function headers() {
     $headers = array();
     foreach($_SERVER as $key => $value) {
