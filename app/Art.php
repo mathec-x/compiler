@@ -28,21 +28,24 @@ class Art implements IArt
 	{
 		
 		$_PATH = $this->GetPath();
-		#separate into path and params
-		$_ARGS = array_slice($_PATH, 3);
-		#preserve full post to use in functions
-		$_POST = Post();
-		#add the same POSTS on argments for function
-		if($_POST && \is_array($_POST) && COUNT($_POST) < 20)
-		foreach($_POST as $key => $value) array_push($_ARGS,[$key => $value]);		
 		# generate {namespace}\\{class} 
 		$namespace = implode('\\', array_slice($_PATH,0,2)) . 'Controller';
 		# generate {method}
 		$callmethod =  implode('\\', array_slice($_PATH,2,1));
 		#the route now can be callable class->method, only accept Controller class in name
-		if( method_exists($namespace,$callmethod) )
+		if( method_exists($namespace,$callmethod) ){
+			#separate into path and params
+			$_ARGS = array_slice($_PATH, 3);
+			#preserve full post to use in functions
+			$_POST = Post();
+			#add the same POSTS on argments for function
+			if($_POST && \is_array($_POST) && COUNT($_POST) < 20)
+			foreach($_POST as $key => $value) array_push($_ARGS,[$key => $value]);		
+			#execute class method
 			$this->execute($namespace,$callmethod, $_ARGS);
+		}
 	}
+
 	/**
 	 * returns an array that can be used as 
 	 * [ 0 => namespace, 1 => class, 2 => method, ...params ]
