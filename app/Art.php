@@ -62,7 +62,7 @@ class Art implements IArt
 				$temp[] = preg_replace("/[^A-Za-z0-9!]/",'', implode(array_map('ucfirst', explode("-", $p))));
 			 else
 			# clear the rest to use as args
-				$temp[] =  preg_replace("/[^A-Za-z0-9-._ !]/",'', urldecode($p) );
+				$temp[] =  preg_replace("/[^A-Za-z0-9-._+ !]/",'', $p );
 
 		return $temp;
 		
