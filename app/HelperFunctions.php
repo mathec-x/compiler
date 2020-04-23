@@ -59,7 +59,7 @@ function restrict($session, $key){
  * JSON_UNESCAPED_UNICODE. 
  * O comportamento destas constantes é descrito na página de constantes https://www.php.net/manual/pt_BR/json.constants.php.
  */
-function Json($data, $options = [JSON_NUMERIC_CHECK] ){
+function Json($data, $options = [JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK] ){
 	header("Content-type: application/json; charset=utf-8");
 	return json_encode($data, ...$options);
 }
