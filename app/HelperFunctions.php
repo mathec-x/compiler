@@ -8,15 +8,21 @@ function getContext(){
 }
 
 //usage echo Mask("##.###.###/####-##",$cnpj);
-function StringMask($mask,$str){
+function StringMask( $mask, $str, $depth = 0 ){
 
 	if(!$str) return NULL;
 
-	$str = str_replace(" ","",$str);
+    $str = str_replace(" ","",$str);
+	$strCount =  strlen( preg_replace("/[^A-Za-z0-9#!?]/", '', $mask)) - strlen($str);
+	
+	for ($i=$strCount; $i > 0; $i--) { 
+		$str = $depth . $str;
+	}
 
-    for($i=0;$i<strlen($str);$i++){
-        $mask[strpos($mask,"#")] = $str[$i];
-    }
+    for( $i=0; $i<strlen($str); $i++){
+
+		$mask[strpos($mask,"#")] = $str[$i];
+	}
 
     return $mask;
 
