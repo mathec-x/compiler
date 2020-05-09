@@ -59,8 +59,10 @@ function StringMask( $mask, $str, $depth = 0 ){
 
 	if(!$str) return NULL;
 
-    $str = str_replace(" ","",$str);
+    	$str = str_replace(" ","",$str);
 	$strCount =  strlen( preg_replace("/[^A-Za-z0-9#!?]/", '', $mask)) - strlen($str);
+	
+	if($strCount < 0) return $str;
 	
 	for ($i=$strCount; $i > 0; $i--) { 
 		$str = $depth . $str;
