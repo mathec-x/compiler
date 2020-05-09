@@ -21,7 +21,7 @@ function getContext(){
 		return count($needles) == $matches ? true : false ;
 	}
 
-		function Contains(string $needle, array $haystack, string $tag = null, bool $exact = false)
+	function Contains(string $needle, array $haystack, string $tag = null, bool $exact = false)
         {
             
             $matches = array();
@@ -29,12 +29,12 @@ function getContext(){
                 $queryPattern =  str_replace('+', '|', StripAccents($needle));
                 foreach($haystack as $k=>$v) 
                 {
-					if($tag && str_contains_all($v[$tag], explode('+', $needle)) && preg_match_all("/$queryPattern/i", StripAccents($v[$tag]), $t))
-					$matches[$k] =  array_merge($v, ['matches'=> count($t[0])]);
+			if($tag && str_contains_all($v[$tag], explode('+', $needle)) && preg_match_all("/$queryPattern/i", StripAccents($v[$tag]), $t))
+			$matches[$k] =  array_merge($v, ['matches'=> count($t[0])]);
 						
 						
-					if(!$tag && str_contains_all($v, explode('+', $needle)) && preg_match_all("/$queryPattern/i", StripAccents($v), $t)) 
-					$matches[$k] =  array_merge($v, ['matches'=> count($t[0])]);
+			if(!$tag && str_contains_all($v, explode('+', $needle)) && preg_match_all("/$queryPattern/i", StripAccents($v), $t)) 
+			$matches[$k] =  array_merge($v, ['matches'=> count($t[0])]);
                     
                 }
                 usort($matches, function($a, $b){
