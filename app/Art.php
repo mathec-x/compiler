@@ -19,9 +19,18 @@ class Art implements IArt
 	public $Path;
 	public static $ControlPath;
 
-    function __construct()
-    {
-        $this->Path = explode('/', array_key_exists('PATH_INFO', $_SERVER) ? $_SERVER['PATH_INFO'] : (array_key_exists('ORIG_PATH_INFO', $_SERVER) ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['REQUEST_URI']));
+    	function __construct()
+	{
+		// $url = strtok($url, '?');
+		$this->Path = explode('/', 
+		strtok(
+			array_key_exists('PATH_INFO', $_SERVER) 
+				? $_SERVER['PATH_INFO'] 
+				: (array_key_exists('ORIG_PATH_INFO', $_SERVER) 
+					? $_SERVER['ORIG_PATH_INFO'] 
+					: $_SERVER['REQUEST_URI'])
+			,'?')
+		);
 	}
 	
 	public function UseMvc() : void
@@ -30,21 +39,26 @@ class Art implements IArt
 		$_PATH = $this->GetPath();
 		# generate {namespace}\\{class} 
 		$namespace = implode('\\', array_slice($_PATH,0,2)) . 'Controller';
-		# generate {method}
-		$callmethod =  implode('\\', array_slice($_PATH,2,1));
-		#the route now can be callable class->method, only accept Controller class in name
-		if( method_exists($namespace,$callmethod) ){
-			#separate into path and params
-			$_ARGS = array_slice($_PATH, 3);
-			#preserve full post to use in functions
-			$_POST = Post();
-			#add the same POSTS on argments for function
-			if($_POST && \is_array($_POST) && COUNT($_POST) < 20)
-			foreach($_POST as $key => $value) array_push($_ARGS,[$key => $value]);		
-			#execute class method
-			$this->execute($namespace,$callmethod, $_ARGS);
+		if(class_exists($namespace))
+		{
+			# generate {method}
+			$callmethod = array_key_exists(2, $_PATH) ? implode('\\', array_slice($_PATH,2,1)) : 'Index';
+			#the route now can be callable class->method, only accept Controller class in name
+			if( method_exists($namespace,$callmethod) )
+			{
+				#separate into path and params
+				$_ARGS = array_slice($_PATH, 3);
+				#preserve full post to use in functions
+				$_POST = Post();
+				#add the same POSTS on argments for function
+				if($_POST && \is_array($_POST) && COUNT($_POST) < 20)
+				foreach($_POST as $key => $value) array_push($_ARGS,[$key => $value]);		
+				#execute class method
+				$this->execute($namespace,$callmethod, $_ARGS);
+			}
 		}
 	}
+
 
 	/**
 	 * returns an array that can be used as 
