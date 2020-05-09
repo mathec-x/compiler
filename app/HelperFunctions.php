@@ -7,6 +7,39 @@ function getContext(){
 	return stream_context_create(array('http' => array('header'=>'Connection: close\r\n')));
 }
 
+	function Contains(string $needle, array $haystack, string $tag = null, bool $exact = false)
+        {
+            
+            $matches = array();
+            if(!$exact){
+                $needle =  str_replace('+', '|', StripAccents($needle));
+                foreach($haystack as $k=>$v) 
+                {
+                    if($tag && preg_match_all("/$needle/i", StripAccents($v[$tag]), $t)) 
+                        $matches[$k] =  array_merge($v, ['matches'=> count($t[0])]);
+
+
+                    if(!$tag && preg_match_all("/$needle/i", StripAccents($v), $t)) 
+                        $matches[$k] =  array_merge($v, ['matches'=> count($t[0])]);
+                    
+                }
+                usort($matches, function($a, $b){
+                    return strcmp($b["matches"], $a["matches"]);
+                });
+            }
+            else{
+                $needle =  str_replace('+', ' ', StripAccents($needle));
+                foreach($haystack as $k=>$v) {
+                    if(strtolower(StripAccents($needle)) == strtolower(StripAccents($v[$tag]))) {
+                        $matches[$k] =  $v;
+                    }
+                }
+            }
+
+            return $matches;
+
+        }
+
 //usage echo Mask("##.###.###/####-##",$cnpj);
 function StringMask( $mask, $str, $depth = 0 ){
 
