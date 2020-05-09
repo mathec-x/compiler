@@ -7,20 +7,34 @@ function getContext(){
 	return stream_context_create(array('http' => array('header'=>'Connection: close\r\n')));
 }
 
-	function Contains(string $needle, array $haystack, string $tag = null, bool $exact = false)
+	function str_contains_all($haystack, array $needles) {
+		
+		$matches = 0;
+		foreach ($needles as $needle) 
+		{
+
+			if ($needle && stristr( StripAccents($haystack), StripAccents($needle) )) {
+				$matches++;
+			}
+		}
+
+		return count($needles) == $matches ? true : false ;
+	}
+
+		function Contains(string $needle, array $haystack, string $tag = null, bool $exact = false)
         {
             
             $matches = array();
             if(!$exact){
-                $needle =  str_replace('+', '|', StripAccents($needle));
+                $queryPattern =  str_replace('+', '|', StripAccents($needle));
                 foreach($haystack as $k=>$v) 
                 {
-                    if($tag && preg_match_all("/$needle/i", StripAccents($v[$tag]), $t)) 
-                        $matches[$k] =  array_merge($v, ['matches'=> count($t[0])]);
-
-
-                    if(!$tag && preg_match_all("/$needle/i", StripAccents($v), $t)) 
-                        $matches[$k] =  array_merge($v, ['matches'=> count($t[0])]);
+					if($tag && str_contains_all($v[$tag], explode('+', $needle)) && preg_match_all("/$queryPattern/i", StripAccents($v[$tag]), $t))
+					$matches[$k] =  array_merge($v, ['matches'=> count($t[0])]);
+						
+						
+					if(!$tag && str_contains_all($v, explode('+', $needle)) && preg_match_all("/$queryPattern/i", StripAccents($v), $t)) 
+					$matches[$k] =  array_merge($v, ['matches'=> count($t[0])]);
                     
                 }
                 usort($matches, function($a, $b){
@@ -28,9 +42,9 @@ function getContext(){
                 });
             }
             else{
-                $needle =  str_replace('+', ' ', StripAccents($needle));
+                $queryPattern =  str_replace('+', ' ', StripAccents($needle));
                 foreach($haystack as $k=>$v) {
-                    if(strtolower(StripAccents($needle)) == strtolower(StripAccents($v[$tag]))) {
+                    if(strtolower(StripAccents($queryPattern)) == strtolower(StripAccents($v[$tag]))) {
                         $matches[$k] =  $v;
                     }
                 }
