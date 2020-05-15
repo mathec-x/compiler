@@ -49,10 +49,10 @@ class Art implements IArt
 				#separate into path and params
 				$_ARGS = array_slice($_PATH, 3);
 				#preserve full post to use in functions
-				$_POST = Post();
+				$POST = Post();
 				#add the same POSTS on argments for function
-				if($_POST && \is_array($_POST) && COUNT($_POST) < 20)
-				foreach($_POST as $key => $value) array_push($_ARGS,[$key => $value]);		
+				if($POST && \is_array($POST) && COUNT($POST) < 20)
+				foreach($POST as $key => $value) array_push($_ARGS,[$key => $value]);		
 				#execute class method
 				$this->execute($namespace,$callmethod, $_ARGS);
 			}
