@@ -158,9 +158,11 @@ function Json($data, $options = [JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK] ){
 
 }
 
-function Post($isObject = true){
-	return json_decode(file_get_contents('php://input'), $isObject);
-}
+	function Post($isObject = true){
+		return file_get_contents( 'php://input' )
+	   		? json_decode( file_get_contents( 'php://input' ), $isObject )
+	   		: $_POST;
+	}
 
 		/**
 	* Verifica se uma string é UTF-8
