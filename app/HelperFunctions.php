@@ -265,6 +265,30 @@ function DateTime(string $date, bool $throwException = false){
 	return $new_date;
 }
 
+/**
+ * Receives format 
+ * dd/mm/yyyyThh:mm:ss 
+ * dd/mm/yyyy hh:mm:ss 
+
+ * return Y-m-d H:i:s or null if invalid date
+ */
+function DateTime2(string $date, string $format = 'Y-m-d H:i:s'){
+
+	$hour = '00';
+
+	if(strstr($date, ' ') || strstr($date, 'T'))
+	[$date, $hour] = preg_split('/[\s|T]/', $date);
+
+	$hour = StringMask('##:##:##', str_replace(':', '', $hour));
+
+	$date = implode('-', array_reverse(preg_split("/(-|\/)/", $date)));
+	$date = Date($format, strtotime("$date $hour"));
+
+	return (bool) strtotime($date) ? $date : null;
+
+}
+
+
 function ArrayDateTime(array $date, bool $throwException = false)
 {
 
