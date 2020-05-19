@@ -18,6 +18,7 @@ class Art implements IArt
 {
 	public $Path;
 	public static $ControlPath;
+	public $includekeysonposts = true;
 
     	function __construct()
 	{
@@ -37,6 +38,7 @@ class Art implements IArt
 	{
 		
 		$_PATH = $this->GetPath();
+
 		# generate {namespace}\\{class} 
 		$namespace = implode('\\', array_slice($_PATH,0,2)) . 'Controller';
 		if(class_exists($namespace))
@@ -47,18 +49,23 @@ class Art implements IArt
 			if( method_exists($namespace,$callmethod) )
 			{
 				#separate into path and params
-				$_ARGS = array_slice($_PATH, 3);
+				$ARGS = array_slice($_PATH, 3);
 				#preserve full post to use in functions
 				$POST = Post();
 				#add the same POSTS on argments for function
 				if($POST && \is_array($POST) && COUNT($POST) < 20)
-				foreach($POST as $key => $value) array_push($_ARGS,[$key => $value]);		
+					foreach($POST as $key => $value) 
+					{
+						if($this->includekeysonposts === true)
+						array_push($ARGS,[$key => $value]);	
+						else
+						array_push($ARGS,$value);
+					}
 				#execute class method
-				$this->execute($namespace,$callmethod, $_ARGS);
+				$this->execute($namespace,$callmethod, $ARGS);
 			}
 		}
 	}
-
 
 	/**
 	 * returns an array that can be used as 
