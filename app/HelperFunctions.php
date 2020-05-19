@@ -44,7 +44,7 @@ function getContext(){
             else{
                 $queryPattern =  str_replace('+', ' ', StripAccents($needle));
                 foreach($haystack as $k=>$v) {
-                    if(strtolower(StripAccents($queryPattern)) == strtolower(StripAccents($v[$tag]))) {
+                    if(strtolower(StripAccents($queryPattern)) == strtolower( $tag ? StripAccents($v[$tag]) : StripAccents($v)  )) {
                         $matches[$k] =  $v;
                     }
                 }
