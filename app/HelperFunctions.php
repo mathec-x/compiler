@@ -274,6 +274,10 @@ function DateTime(string $date, bool $throwException = false){
  */
 function DateTime2(string $date, string $format = 'Y-m-d H:i:s'){
 
+	if(strtotime($date)){
+		return date($format, strtotime($date));
+	}
+
 	$hour = '00';
 
 	if(strstr($date, ' ') || strstr($date, 'T'))
