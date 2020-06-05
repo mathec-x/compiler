@@ -294,6 +294,30 @@ function DateTime2(string $date, string $format = 'Y-m-d H:i:s'){
 
 }
 
+    function Monetizeme($money){
+        // ['1,10 USD', 1.10],
+        // ['1 000 000.00', 1000000.0],
+        // ['$1 000 000.21', 1000000.21],
+        // ['£1.10', 1.10],
+        // ['$123 456 789', 123456789.0],
+        // ['$123,456,789.12', 123456789.12],
+        // ['$123 456 789,12', 123456789.12],
+        // ['1.10', 1.1],
+        // [',,,,.10', .1],
+        // ['1.000', 1000.0],
+        // ['1,000', 1000.0]
+
+        $cleanString = preg_replace('/([^0-9\.,])/i', '', $money);
+        $onlyNumbersString = preg_replace('/([^0-9])/i', '', $money);
+    
+        $separatorsCountToBeErased = strlen($cleanString) - strlen($onlyNumbersString) - 1;
+    
+        $stringWithCommaOrDot = preg_replace('/([,\.])/', '', $cleanString, $separatorsCountToBeErased);
+        $removedThousandSeparator = preg_replace('/(\.|,)(?=[0-9]{3,}$)/', '',  $stringWithCommaOrDot);
+    
+        return (float) str_replace(',', '.', $removedThousandSeparator);
+    }
+
 
 function ArrayDateTime(array $date, bool $throwException = false)
 {
