@@ -164,6 +164,18 @@ function Json($data, $options = [JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK] ){
 	   		: $_POST;
 	}
 
+	function FromBody($key){
+		$fromBody =  file_get_contents( 'php://input' );
+		if($fromBody)
+		return array_key_exists($key, json_decode( $fromBody, true ))   
+				? json_decode( $fromBody, true )[$key]
+				: die(http_response_code(422));
+		else 
+		return array_key_exists($key, $_POST) 
+			   		? $_POST[$key]
+					: die(http_response_code(422));
+	}		
+
 		/**
 	* Verifica se uma string é UTF-8
 	* @param string $string A string que será verificada
