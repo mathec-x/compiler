@@ -7,6 +7,12 @@ function getContext(){
 	return stream_context_create(array('http' => array('header'=>'Connection: close\r\n')));
 }
 
+function kill(int $status, string $message){
+	http_response_code($status);
+	echo Json(['message' => $message]);
+	die();
+}
+
 
 function HttpPost($url, $data = [])
 {
