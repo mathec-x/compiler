@@ -7,6 +7,35 @@ function getContext(){
 	return stream_context_create(array('http' => array('header'=>'Connection: close\r\n')));
 }
 
+
+function HttpPost($url, $data = [])
+{
+
+	$json = json_encode($data);
+	$curl = curl_init($url);
+
+	curl_setopt_array($curl, [
+		CURLOPT_POST => true,
+		CURLOPT_HEADER => false,
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_POSTFIELDS => $json,
+		CURLOPT_HTTPHEADER => array(
+			'Content-Type: application/json',
+			'Content-Length: ' . strlen($json)
+		),
+	]);
+
+	$response = curl_exec($curl);
+	$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+	curl_close($curl);
+
+	return [
+		'status' => $httpcode,
+		'data' => json_decode($response)
+	];
+}
+
 	function str_contains_all($haystack, array $needles) {
 		
 		$matches = 0;
