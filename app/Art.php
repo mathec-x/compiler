@@ -108,7 +108,13 @@ class Art implements IArt
 
 		if(self::$tunnel){
 
-			HttpPost(self::$tunnel , ['namespace' => self::$ControlPath, 'method' => $callmethod, 'args' => $this->ARGS, 'data' => Post()], false);
+			HttpPost(self::$tunnel , [
+				'request' => $_SERVER['REQUEST_METHOD'],
+				'namespace' => self::$ControlPath, 
+				'method' => $callmethod, 
+				'args' => $this->ARGS, 
+				'data' => Post()
+			]);
 			
 		}
 
