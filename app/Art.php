@@ -19,6 +19,9 @@ class Art implements IArt
 	public $Path;
 	public static $ControlPath;
 	public $includekeysonposts = true;
+	
+	private $ARGS;
+	private static $tunel = false;
 
     	function __construct()
 	{
@@ -33,6 +36,12 @@ class Art implements IArt
 			,'?')
 		);
 	}
+	
+	public function UseTuneling($url)
+	{
+		self::$tunel = $url;
+	}
+
 	
 	public function UseMvc() : void
 	{
@@ -50,6 +59,7 @@ class Art implements IArt
 			{
 				#separate into path and params
 				$ARGS = array_slice($_PATH, 3);
+				$this->ARGS = $ARGS;
 				#preserve full post to use in functions
 				$POST = Post();
 				#add the same POSTS on argments for function
@@ -94,8 +104,17 @@ class Art implements IArt
 	 */
 	public function execute(string $namespace, string $callmethod , array $_ARGS = []) : void
 	{
-		self::$ControlPath = str_replace('Controller', '', $namespace.$callmethod);
-		 print_r(call_user_func_array( array( new $namespace, $callmethod), $_ARGS ));
+		self::$ControlPath = str_replace('Controller', '', $namespace);
+
+		if(self::$tunel){
+
+			HttpPost(self::$tunel , ['namespace' => self::$ControlPath, 'method' => $callmethod, 'args' => $this->ARGS, 'data' => Post()], false);
+			
+		}
+
+		self::$ControlPath .= $callmethod;
+		
+		print_r(call_user_func_array( array( new $namespace, $callmethod), $_ARGS ));
 		#finally ends
 		die();
 	}
