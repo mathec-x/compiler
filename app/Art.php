@@ -21,7 +21,7 @@ class Art implements IArt
 	public $includekeysonposts = true;
 	
 	private $ARGS;
-	private static $tunel = false;
+	private static $tunnel = false;
 
     	function __construct()
 	{
@@ -37,9 +37,9 @@ class Art implements IArt
 		);
 	}
 	
-	public function UseTuneling($url)
+	public function UseTunneling($url)
 	{
-		self::$tunel = $url;
+		self::$tunnel = $url;
 	}
 
 	
@@ -106,9 +106,9 @@ class Art implements IArt
 	{
 		self::$ControlPath = str_replace('Controller', '', $namespace);
 
-		if(self::$tunel){
+		if(self::$tunnel){
 
-			HttpPost(self::$tunel , ['namespace' => self::$ControlPath, 'method' => $callmethod, 'args' => $this->ARGS, 'data' => Post()], false);
+			HttpPost(self::$tunnel , ['namespace' => self::$ControlPath, 'method' => $callmethod, 'args' => $this->ARGS, 'data' => Post()], false);
 			
 		}
 
